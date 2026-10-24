@@ -18,7 +18,12 @@ A web-based Reservation Management System built with PHP and MySQL. It includes 
 
 ## Demo Accounts
 - **Admin Account:** Register a new account, then go to phpMyAdmin and change the `role` from `user` to `admin`.
+- admin@example.com
+- admin123
 - **Regular User:** Register directly through the UI.
+- malak.musameh31@gmail.com
+- malak123
+
 
 ## Features
 - **Users:** Register, login, view available slots, make a reservation, view their own reservations, and cancel.

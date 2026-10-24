@@ -7,34 +7,34 @@ DROP TABLE IF EXISTS time_slots;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+	is_active TINYINT(1) NOT NULL DEFAULT 1,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE time_slots(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    date DATE NOT NULL,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
-    capacity INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	date DATE NOT NULL,
+	start_time TIME NOT NULL,
+	end_time TIME NOT NULL,
+	capacity INT NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE reservations(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    slot_id INT NOT NULL,
-    note TEXT NULL,
-    status ENUM('pending', 'confirmed', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY unique_user_slot (user_id, slot_id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (slot_id) REFERENCES time_slots(id) ON DELETE CASCADE
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id INT NOT NULL,
+	slot_id INT NOT NULL,
+	note TEXT NULL,
+	status ENUM('pending', 'confirmed', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE KEY unique_user_slot (user_id, slot_id),
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (slot_id) REFERENCES time_slots(id) ON DELETE CASCADE
 );
 
 -- Insert a default admin account

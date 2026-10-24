@@ -21,13 +21,13 @@ class database_data
 	public function create_connection()
 	{
 		try {
-            self::$pdo = new PDO("mysql:host=" . $this->servername . ";dbname=" . $this->dbname, $this->username, $this->password);
-            self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            self::$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // ADDED: Makes fetch() return cleaner arrays
-        } catch(PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
-        }
-        return self::$pdo;
+			self::$pdo = new PDO("mysql:host=" . $this->servername . ";dbname=" . $this->dbname, $this->username, $this->password);
+			self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			self::$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // ADDED: Makes fetch() return cleaner arrays
+		} catch(PDOException $e) {
+			echo "Connection failed: " . $e->getMessage();
+		}
+		return self::$pdo;
 	}
 }
 
