@@ -13,20 +13,22 @@ $currentUser = getCurrentUser(database_data::$pdo);
 </head>
 <body>
 	<nav>
-		<a href="index.php" class="logo">✨ EventSpace</a>
+		<a href="index.php" class="logo">EventSpace</a>
+		
 		<div class="links">
-			<a href="index.php">Home</a>
-			<a href="#">Halls</a>
-			<a href="#">About</a>
-			<a href="#">Contact</a>
+			<?php if (!$currentUser || $currentUser['role'] !== 'admin'): ?>
+				<a href="index.php">Home</a>
+				<a href="index.php#halls">Halls</a>
+				<?php if ($currentUser): ?>
+					<a href="my_reservations.php">My Bookings</a>
+				<?php endif; ?>
+			<?php endif; ?>
 		</div>
+
 		<div class="actions">
-			<button onclick="toggleTheme()" class="btn btn-outline" style="padding: 8px 15px;">🌓 Mode</button>
 			<?php if ($currentUser): ?>
 				<?php if ($currentUser['role'] === 'admin'): ?>
 					<a href="admin_dashboard.php" class="btn btn-primary">Admin Panel</a>
-				<?php else: ?>
-					<a href="my_reservations.php" class="btn btn-primary">My Bookings</a>
 				<?php endif; ?>
 				<a href="logout.php" class="btn btn-outline">Logout</a>
 			<?php else: ?>

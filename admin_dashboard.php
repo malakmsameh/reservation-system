@@ -62,45 +62,46 @@ include 'header.php';
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Reduced max-width and margins -->
-<div class="container" style="max-width: 1000px; margin-top: 1px; margin-bottom: 30px;">
-		
-	<!-- Admin Navigation Tabs -->
-	<div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+<div class="admin-layout">
+	<!-- Sidebar Navigation -->
+	<div class="sidebar">
 		<a href="admin_dashboard.php" class="btn btn-primary">Dashboard</a>
 		<a href="admin_reservations.php" class="btn btn-outline">Reservations</a>
 		<a href="admin_users.php" class="btn btn-outline">Users</a>
 		<a href="admin_slots.php" class="btn btn-outline">Halls</a>
 	</div>
 
-	<h2 class="section-title">Admin Dashboard</h2>
-	<?php echo $dashboard->message; ?>
+	<!-- Main Content -->
+	<div class="admin-content">
+		<h2 class="section-title">Admin Dashboard</h2>
+		<?php echo $dashboard->message; ?>
 
-	<!-- Stats Grid: Made smaller and tighter -->
-	<div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px;">
-		<div class="event-card" style="padding: 15px; text-align: center;">
-			<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Total Bookings</h3>
-			<p style="font-size: 24px; font-weight: 700; color: var(--primary-blue);"><?php echo $dashboard->total_reservations; ?></p>
+		<!-- Stats Grid -->
+		<div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px;">
+			<div class="event-card" style="padding: 15px; text-align: center;">
+				<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Total Bookings</h3>
+				<p style="font-size: 24px; font-weight: 700; color: var(--primary-blue);"><?php echo $dashboard->total_reservations; ?></p>
+			</div>
+			<div class="event-card" style="padding: 15px; text-align: center;">
+				<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Pending</h3>
+				<p style="font-size: 24px; font-weight: 700; color: #ffc107;"><?php echo $dashboard->pending_reservations; ?></p>
+			</div>
+			<div class="event-card" style="padding: 15px; text-align: center;">
+				<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Confirmed</h3>
+				<p style="font-size: 24px; font-weight: 700; color: #28a745;"><?php echo $dashboard->confirmed_reservations; ?></p>
+			</div>
+			<div class="event-card" style="padding: 15px; text-align: center;">
+				<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Total Users</h3>
+				<p style="font-size: 24px; font-weight: 700; color: var(--text-color);"><?php echo $dashboard->total_users; ?></p>
+			</div>
 		</div>
-		<div class="event-card" style="padding: 15px; text-align: center;">
-			<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Pending</h3>
-			<p style="font-size: 24px; font-weight: 700; color: #ffc107;"><?php echo $dashboard->pending_reservations; ?></p>
-		</div>
-		<div class="event-card" style="padding: 15px; text-align: center;">
-			<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Confirmed</h3>
-			<p style="font-size: 24px; font-weight: 700; color: #28a745;"><?php echo $dashboard->confirmed_reservations; ?></p>
-		</div>
-		<div class="event-card" style="padding: 15px; text-align: center;">
-			<h3 style="color: #888; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Total Users</h3>
-			<p style="font-size: 24px; font-weight: 700; color: var(--text-color);"><?php echo $dashboard->total_users; ?></p>
-		</div>
-	</div>
 
-	<!-- Chart Section: Changed to Bar Chart, reduced height -->
-	<div class="event-card" style="padding: 20px;">
-		<h3 style="margin-bottom: 15px; font-size: 16px;">Reservations by Status</h3>
-		<div style="position: relative; height: 250px; width: 100%;">
-			<canvas id="statusChart"></canvas>
+		<!-- Chart Section -->
+		<div class="event-card" style="padding: 20px;">
+			<h3 style="margin-bottom: 15px; font-size: 16px;">Reservations by Status</h3>
+			<div style="position: relative; height: 250px; width: 100%;">
+				<canvas id="statusChart"></canvas>
+			</div>
 		</div>
 	</div>
 </div>
@@ -115,23 +116,23 @@ include 'header.php';
 
 	const ctx = document.getElementById('statusChart').getContext('2d');
 	new Chart(ctx, {
-		type: 'bar', // CHANGED TO BAR CHART
+		type: 'bar',
 		data: {
 			labels: labels,
 			datasets: [{
 				label: 'Number of Reservations',
 				data: data,
 				backgroundColor: [
-					'rgba(255, 193, 7, 0.7)',  // Pending
-					'rgba(40, 167, 69, 0.7)',  // Confirmed
-					'rgba(220, 53, 69, 0.7)',  // Rejected
-					'rgba(108, 117, 125, 0.7)' // Cancelled
+					'rgba(255, 193, 7, 0.7)',
+					'rgba(40, 167, 69, 0.7)',
+					'rgba(220, 53, 69, 0.7)',
+					'rgba(108, 117, 125, 0.7)'
 				],
 				borderColor: [
 					'#ffc107', '#28a745', '#dc3545', '#6c757d'
 				],
 				borderWidth: 1,
-				borderRadius: 6, // Rounded corners for bars
+				borderRadius: 6,
 				barThickness: 50
 			}]
 		},
@@ -139,7 +140,7 @@ include 'header.php';
 			responsive: true,
 			maintainAspectRatio: false,
 			plugins: {
-				legend: { display: false }, // Hide legend because the bars are labeled
+				legend: { display: false },
 				tooltip: {
 					backgroundColor: isDark ? '#333' : '#fff',
 					titleColor: isDark ? '#fff' : '#000',

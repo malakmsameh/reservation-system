@@ -83,7 +83,7 @@ include 'header.php';
 		<div style="background: var(--bg-color); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 30px;">
 			<p><strong>📅 Date:</strong> <?php echo htmlspecialchars($manager->slot['date']); ?></p>
 			<p><strong>⏰ Time:</strong> <?php echo date('g:i A', strtotime($manager->slot['start_time'])); ?> - <?php echo date('g:i A', strtotime($manager->slot['end_time'])); ?></p>
-			<p><strong>👥 Available Seats:</strong> <?php echo getRemainingCapacity(database_data::$pdo, $manager->slot_id, $manager->slot['capacity']); ?> / <?php echo $manager->slot['capacity']; ?></p>
+			<p><strong>👥 Available Seats:</strong> <?php echo $manager->slot['capacity']; ?></p>
 		</div>
 
 		<form action="reserve.php" method="POST">

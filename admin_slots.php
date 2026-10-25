@@ -75,81 +75,85 @@ $manager->load_slots();
 include 'header.php';
 ?>
 
-<div class="container" style="margin-top: 10px; margin-bottom: 50px;">
-		<!-- Admin Navigation Tabs -->
-	<div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+<div class="admin-layout">
+	<!-- Sidebar Navigation -->
+	<div class="sidebar">
 		<a href="admin_dashboard.php" class="btn btn-outline">Dashboard</a>
 		<a href="admin_reservations.php" class="btn btn-outline">Reservations</a>
 		<a href="admin_users.php" class="btn btn-outline">Users</a>
 		<a href="admin_slots.php" class="btn btn-primary">Halls</a>
 	</div>
-	<h2 class="section-title">Manage Event Halls</h2>
-	<?php echo $manager->message; ?>
 
-	<div class="grid" style="grid-template-columns: 1fr 2fr; gap: 30px; align-items: start;">
-		
-		<!-- Add Slot Form -->
-		<div class="event-card" style="padding: 30px;">
-			<h3 style="margin-bottom: 20px;">Add New Hall</h3>
-			<form action="admin_slots.php" method="POST">
-				<div class="form-group">
-					<label>Date:</label>
-					<input type="date" name="date" required class="form-control">
-				</div>
-				<div class="form-group">
-					<label>Start Time:</label>
-					<input type="time" name="start_time" required class="form-control">
-				</div>
-				<div class="form-group">
-					<label>End Time:</label>
-					<input type="time" name="end_time" required class="form-control">
-				</div>
-				<div class="form-group">
-					<label>Capacity (Seats):</label>
-					<input type="number" name="capacity" min="1" required class="form-control">
-				</div>
-				<button type="submit" name="add_slot" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Add Hall</button>
-			</form>
+	<!-- Main Content -->
+	<div class="admin-content">
+		<h2 class="section-title">Manage Event Halls</h2>
+		<?php echo $manager->message; ?>
+
+		<div class="grid" style="grid-template-columns: 1fr 2fr; gap: 30px; align-items: start;">
+			
+			<!-- Add Slot Form -->
+			<div class="event-card" style="padding: 30px;">
+				<h3 style="margin-bottom: 20px;">Add New Hall</h3>
+				<form action="admin_slots.php" method="POST">
+					<div class="form-group">
+						<label>Date:</label>
+						<input type="date" name="date" required class="form-control">
+					</div>
+					<div class="form-group">
+						<label>Start Time:</label>
+						<input type="time" name="start_time" required class="form-control">
+					</div>
+					<div class="form-group">
+						<label>End Time:</label>
+						<input type="time" name="end_time" required class="form-control">
+					</div>
+					<div class="form-group">
+						<label>Capacity (Seats):</label>
+						<input type="number" name="capacity" min="1" required class="form-control">
+					</div>
+					<button type="submit" name="add_slot" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Add Hall</button>
+				</form>
+			</div>
+
+			<!-- Existing Slots Table -->
+			<div class="event-card" style="padding: 20px; overflow-x: auto;">
+				<h3 style="margin-bottom: 20px;">Existing Halls</h3>
+				<table style="width: 100%; border-collapse: collapse; min-width: 500px;">
+					<thead>
+						<tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+							<th style="padding: 15px 10px;">ID</th>
+							<th style="padding: 15px 10px;">Date</th>
+							<th style="padding: 15px 10px;">Time</th>
+							<th style="padding: 15px 10px;">Capacity</th>
+							<th style="padding: 15px 10px;">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if (empty($manager->slots)): ?>
+							<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">No halls found.</td></tr>
+						<?php else: ?>
+							<?php foreach ($manager->slots as $slot): ?>
+								<tr style="border-bottom: 1px solid var(--border-color);">
+									<td style="padding: 15px 10px;">#<?php echo $slot['id']; ?></td>
+									<td style="padding: 15px 10px;"><?php echo htmlspecialchars($slot['date']); ?></td>
+									<td style="padding: 15px 10px;">
+										<?php echo date('g:i A', strtotime($slot['start_time'])); ?> - <?php echo date('g:i A', strtotime($slot['end_time'])); ?>
+									</td>
+									<td style="padding: 15px 10px;"><?php echo $slot['capacity']; ?></td>
+									<td style="padding: 15px 10px;">
+										<form action="admin_slots.php" method="POST" style="display:inline;">
+											<input type="hidden" name="slot_id" value="<?php echo $slot['id']; ?>">
+											<button type="submit" name="delete_slot" class="btn btn-outline" style="padding: 5px 15px; font-size: 12px; border-color: #dc3545; color: #dc3545;" onclick="return confirm('Are you sure you want to delete this slot?');">Delete</button>
+										</form>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
+
 		</div>
-
-		<!-- Existing Slots Table -->
-		<div class="event-card" style="padding: 20px; overflow-x: auto;">
-			<h3 style="margin-bottom: 20px;">Existing Halls</h3>
-			<table style="width: 100%; border-collapse: collapse; min-width: 500px;">
-				<thead>
-					<tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-						<th style="padding: 15px 10px;">ID</th>
-						<th style="padding: 15px 10px;">Date</th>
-						<th style="padding: 15px 10px;">Time</th>
-						<th style="padding: 15px 10px;">Capacity</th>
-						<th style="padding: 15px 10px;">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if (empty($manager->slots)): ?>
-						<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">No halls found.</td></tr>
-					<?php else: ?>
-						<?php foreach ($manager->slots as $slot): ?>
-							<tr style="border-bottom: 1px solid var(--border-color);">
-								<td style="padding: 15px 10px;">#<?php echo $slot['id']; ?></td>
-								<td style="padding: 15px 10px;"><?php echo htmlspecialchars($slot['date']); ?></td>
-								<td style="padding: 15px 10px;">
-									<?php echo date('g:i A', strtotime($slot['start_time'])); ?> - <?php echo date('g:i A', strtotime($slot['end_time'])); ?>
-								</td>
-								<td style="padding: 15px 10px;"><?php echo $slot['capacity']; ?></td>
-								<td style="padding: 15px 10px;">
-									<form action="admin_slots.php" method="POST" style="display:inline;">
-										<input type="hidden" name="slot_id" value="<?php echo $slot['id']; ?>">
-										<button type="submit" name="delete_slot" class="btn btn-outline" style="padding: 5px 15px; font-size: 12px; border-color: #dc3545; color: #dc3545;" onclick="return confirm('Are you sure you want to delete this slot?');">Delete</button>
-									</form>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-					<?php endif; ?>
-				</tbody>
-			</table>
-		</div>
-
 	</div>
 </div>
 

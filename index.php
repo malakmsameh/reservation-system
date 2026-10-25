@@ -18,10 +18,10 @@ include 'header.php';
 <section class="hero">
 	<h1>Book The Perfect Space For Your Next Event</h1>
 	<p>From weddings to corporate galas, find and reserve the best event halls in seconds.</p>
-	<div>
+	<!-- <div>
 		<a href="#halls" class="btn btn-primary">Explore Halls</a>
 		<a href="#" class="btn btn-outline" style="border-color: white; color: white;">Learn More</a>
-	</div>
+	</div> -->
 </section>
 
 <!-- Available Slots Section -->
@@ -33,9 +33,12 @@ include 'header.php';
 	<?php endif; ?>
 
 	<div class="grid">
-		<?php if (empty($slots)): ?>
-			<p>No available halls right now. Please check back later.</p>
-		<?php else: ?>
+		        <?php if (empty($slots)): ?>
+            <div class="event-card" style="padding: 20px; text-align: center;">
+                <h3 style="color: #888;">No available halls right now.</h3>
+                <p>Please check back later for future dates!</p>
+            </div>
+        <?php else: ?>
 			<?php foreach ($slots as $slot): 
 				$remaining = getRemainingCapacity(database_data::$pdo, $slot['id'], $slot['capacity']);
 			?>
@@ -51,7 +54,7 @@ include 'header.php';
 						</div>
 						
 						<p style="margin-bottom: 15px; color: #888; font-size: 14px;">
-							Capacity: <?php echo $remaining; ?> / <?php echo $slot['capacity']; ?> seats available
+							Capacity: <?php echo $slot['capacity']; ?> seats available
 						</p>
 
 						<?php if ($remaining > 0): ?>
